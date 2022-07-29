@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=\, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="name"></div>
+    <div class="age"></div>
+    <div class="location"></div>
+    <script>
+    //   function reqListener() {
+    //     console.log(this.responseText);
+    //   }
+
+      var oReq = new XMLHttpRequest();
+    //   oReq.addEventListener("load", reqListener);
+                            //服务端
+      oReq.open("PUT", "http://121.40.50.145:8888/");  //构造请求报文的请求行 
+      oReq.setRequestHeader("X-name", "pjw"); //设置请求头部分 应该在open之后，send之前
+      // 回调函数
+
+      //拿响应的方法
+        //1.从回调函数的参数中获取
+        //2.可以从xhr实例化的对象的respone中获取【一般不用】
+      function getRes(res) {  //响应的所有数据在res中
+        // console.log("oreq:",oReq.response)
+        const resData = JSON.parse(res.target.response).data   //JSON转为JS对象
+        console.log(resData)
+        // 取元素
+        document.getElementsByClassName('age')[0].innerHTML = resData.age
+        // 名字
+        document.getElementsByClassName('name')[0].innerHTML = resData.name
+        // 地址
+        document.getElementsByClassName('location')[0].innerHTML = resData.location
+      }
+      oReq.send(); //发送报文到后端
+                //异步的
+      oReq.addEventListener('load', getRes)  //增加事件监听器 load为事件 触发事件执行getRes回调函数
+    </script>
+  </body>
+</html>
